@@ -1,21 +1,41 @@
 import os
 import shutil
 
+categorias = {
+    "Imagens": ["png", "jpg", "jpeg", "gif"],
+    "Documentos": ["pdf", "doc", "docx", "txt"],
+    "Planilhas": ["xls", "xlsx", "csv"],
+    "Videos": ["mp4", "mkv", "avi"],
+    "Musicas": ["mp3", "wav"]
+}
+
 def organizar_pasta(caminho):
+
     arquivos = os.listdir(caminho)
 
     for arquivo in arquivos:
+
         caminho_completo = os.path.join(caminho, arquivo)
 
         if os.path.isfile(caminho_completo):
-            extensao = arquivo.split(".")[-1]
 
-            pasta_destino = os.path.join(caminho, extensao.upper())
+            extensao = arquivo.split(".")[-1].lower()
 
-            if not os.path.exists(pasta_destino):
-                os.makedirs(pasta_destino)
+            pasta_destino = "Outros"
 
-            shutil.move(caminho_completo, os.path.join(pasta_destino, arquivo))
+            for categoria, extensoes in categorias.items():
 
-pasta  = input("Digite o caminho da pasta: ")
+                if extensao in extensoes:
+                    pasta_destino = categoria
+                    break
+
+            pasta_destino_path = os.path.join(caminho, pasta_destino)
+
+            if not os.path.exists(pasta_destino_path):
+                os.makedirs(pasta_destino_path)
+
+            shutil.move(caminho_completo, os.path.join(pasta_destino_path, arquivo))
+
+
+pasta = input("Digite o caminho da pasta: ")
 organizar_pasta(pasta)
