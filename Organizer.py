@@ -13,6 +13,8 @@ def organizar_pasta(caminho):
 
     arquivos = os.listdir(caminho)
 
+    contador = 0
+
     for arquivo in arquivos:
 
         caminho_completo = os.path.join(caminho, arquivo)
@@ -34,8 +36,11 @@ def organizar_pasta(caminho):
             if not os.path.exists(pasta_destino_path):
                 os.makedirs(pasta_destino_path)
 
+            print(f"Movendo {arquivo} → {pasta_destino}")
+
             shutil.move(caminho_completo, os.path.join(pasta_destino_path, arquivo))
 
+            contador += 1
 
 pasta = input("Digite o caminho da pasta: ")
 organizar_pasta(pasta)
