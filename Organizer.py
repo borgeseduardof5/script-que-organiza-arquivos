@@ -1,7 +1,8 @@
 import os
 import shutil
+import sys
 
-modo_simulacao = False
+modo_simulacao = "--simular" in sys.argv
 
 categorias = {
     "Imagens": ["png", "jpg", "jpeg", "gif"],
@@ -19,13 +20,15 @@ def organizar_pasta(caminho):
 
     arquivos = os.listdir(caminho)
 
+    total_arquivos = len(arquivos)
+
     contador = 0
 
-    for arquivo in arquivos:
+    for i, arquivo in enumerate(arquivos, start=1):
 
         caminho_completo = os.path.join(caminho, arquivo)
 
-        if os.path.isfile(caminho_completo):
+        if os.path.isfile(caminho_completo) and "." in arquivo: 
 
             extensao = arquivo.split(".")[-1].lower()
 
@@ -42,7 +45,7 @@ def organizar_pasta(caminho):
             if not os.path.exists(pasta_destino_path):
                 os.makedirs(pasta_destino_path)
 
-            print(f"{arquivo} → {pasta_destino}")
+            print(f"[{i}/{total_arquivos}] {arquivo} → {pasta_destino}")
 
             if not modo_simulacao:
                 shutil.move(
