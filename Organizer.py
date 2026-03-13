@@ -1,6 +1,8 @@
 import os
 import shutil
 
+modo_simulacao = False
+
 categorias = {
     "Imagens": ["png", "jpg", "jpeg", "gif"],
     "Documentos": ["pdf", "doc", "docx", "txt"],
@@ -10,6 +12,10 @@ categorias = {
 }
 
 def organizar_pasta(caminho):
+
+    if modo_simulacao:
+        print("=== MODO SIMULAÇÃO ===")
+        print("Nenhum arquivo será movido\n")
 
     arquivos = os.listdir(caminho)
 
@@ -36,11 +42,18 @@ def organizar_pasta(caminho):
             if not os.path.exists(pasta_destino_path):
                 os.makedirs(pasta_destino_path)
 
-            print(f"Movendo {arquivo} → {pasta_destino}")
+            print(f"{arquivo} → {pasta_destino}")
 
-            shutil.move(caminho_completo, os.path.join(pasta_destino_path, arquivo))
+            if not modo_simulacao:
+                shutil.move(
+                    caminho_completo,
+                    os.path.join(pasta_destino_path, arquivo)
+                )
 
-            contador += 1
+                contador += 1
+
+    print(f"\nArquivos organizados: {contador}")
+
 
 pasta = input("Digite o caminho da pasta: ")
 organizar_pasta(pasta)
